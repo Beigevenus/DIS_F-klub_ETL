@@ -59,21 +59,43 @@ def transform():
     pass
 
 
+def read_from_csv_file(relative_path_to_file, mode="r", buffering=16384, encoding="utf-8", delimiter=";"):
+    """ Utility function for reading data from a CSV file. """
+
+    from pathlib import Path
+    project_dir_path = Path(__file__).parent.parent.resolve()
+    abs_path_to_file = str(Path.joinpath(project_dir_path, relative_path_to_file))
+    return CSVSource(open(abs_path_to_file, mode, buffering, encoding), delimiter)
+
+
+def get_csv_file_path(file_name, data_folder_name=config.data_folder_name):
+    """ Utility function for constructing relative CSV file path based on convention 
+        that CSV files exist in `<project_root>/data_folder_name`. """
+
+    return f"{data_folder_name}/{file_name}"
+
+
 def main():
     global connection
 
-    product_data = CSVSource(open('data/product.csv', 'r', 16384, encoding='utf-8'),
-                             delimiter=';')
-    category_data = CSVSource(open('data/category.csv', 'r', 16384, encoding='utf-8'),
-                              delimiter=';')
-    member_data = CSVSource(open('data/member.csv', 'r', 16384, encoding='utf-8'),
-                            delimiter=';')
-    product_categories_data = CSVSource(open('data/product_categories.csv', 'r', 16384, encoding='utf-8'),
-                                        delimiter=';')
-    location_data = CSVSource(open('data/room.csv', 'r', 16384, encoding='utf-8'),
-                              delimiter=';')
-    sale_data = CSVSource(open('data/sale.csv', 'r', 16384, encoding='utf-8'),
-                          delimiter=';')
+    product_data = read_from_csv_file(
+        get_csv_file_path(config.file_name_product)
+    )
+    category_data = read_from_csv_file(
+        get_csv_file_path(config.file_name_category)
+    )
+    member_data = read_from_csv_file(
+        get_csv_file_path(config.file_name_members)
+    )
+    product_categories_data = read_from_csv_file(
+        get_csv_file_path(config.file_name_product_categories)
+    )
+    location_data = read_from_csv_file(
+        get_csv_file_path(config.file_name_room)
+    )
+    sale_data = read_from_csv_file(
+        get_csv_file_path(config.file_name_sale)
+    )
 
     clean()
     transform()
