@@ -1,5 +1,13 @@
+import psycopg2 as psycopg2
 import pygrametl
+from pygrametl.datasources import CSVSource
 from pygrametl.tables import Dimension, FactTable
+
+# Connection to target DW:
+pgconn = psycopg2.connect(user='postgres', password='PASSWORD', host='127.0.0.1', database='f_klub')
+connection = pygrametl.ConnectionWrapper(pgconn)
+connection.setasdefault()
+connection.execute('set search_path to f_klub')
 
 # Dimensions
 product_dim = Dimension(
@@ -43,18 +51,44 @@ inventory_fact = FactTable(
 )
 
 
-def main():
+def clean():
     pass
-    # for row in inputdata:
-    #     extractdomaininfo(row)
-    #     extractserverinfo(row)
-    #     row['size'] = pygrametl.getint(row['size']) # Convert to an int
-    #     # Add the data to the dimension tables and the fact table
-    #     row['pageid'] = pagesf.scdensure(row)
-    #     row['dateid'] = datedim.ensure(row, {'date':'downloaddate'})
-    #     row['testid'] = testdim.lookup(row, {'testname':'test'})
-    #     facttbl.insert(row)
-    # connection.commit()
+
+
+def transform():
+    pass
+
+
+def main():
+    global connection
+
+    product_data = CSVSource(open('data/product.csv', 'r', 16384, encoding='utf-8'),
+                             delimiter=';')
+    category_data = CSVSource(open('data/category.csv', 'r', 16384, encoding='utf-8'),
+                              delimiter=';')
+    member_data = CSVSource(open('data/member.csv', 'r', 16384, encoding='utf-8'),
+                            delimiter=';')
+    product_categories_data = CSVSource(open('data/product_categories.csv', 'r', 16384, encoding='utf-8'),
+                                        delimiter=';')
+    location_data = CSVSource(open('data/room.csv', 'r', 16384, encoding='utf-8'),
+                              delimiter=';')
+    sale_data = CSVSource(open('data/sale.csv', 'r', 16384, encoding='utf-8'),
+                          delimiter=';')
+
+    clean()
+    transform()
+
+    for row in product_data:
+        print(row)
+        # extractdomaininfo(row)
+        # extractserverinfo(row)
+        # row['size'] = pygrametl.getint(row['size']) # Convert to an int
+        # # Add the data to the dimension tables and the fact table
+        # row['pageid'] = pagesf.scdensure(row)
+        # row['dateid'] = datedim.ensure(row, {'date':'downloaddate'})
+        # row['testid'] = testdim.lookup(row, {'testname':'test'})
+        # facttbl.insert(row)
+    connection.commit()
 
 
 if __name__ == '__main__':
