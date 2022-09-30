@@ -10,7 +10,7 @@
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
-            "justMyCode": true, 
+            "justMyCode": true,
             "envFile": "${workspaceFolder}/.env"
         },
         {
@@ -19,7 +19,7 @@
             "request": "launch",
             "program": "src/main.py",
             "console": "integratedTerminal",
-            "justMyCode": true, 
+            "justMyCode": true,
             "envFile": "${workspaceFolder}/.env"
         },
     ]

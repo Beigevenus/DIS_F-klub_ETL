@@ -2,9 +2,23 @@ import psycopg2 as psycopg2
 import pygrametl
 from pygrametl.datasources import CSVSource
 from pygrametl.tables import Dimension, FactTable
+import os
+import constants
+from config import Config
+from dotenv import load_dotenv
+
+load_dotenv()  # take environment variables from .env.
+
+DB_NAME = os.environ[constants.DB_NAME]
+DB_USER_NAME = os.environ[constants.DB_USER_NAME]
+DB_HOST = os.environ[constants.DB_HOST]
+DB_PASSWORD = os.environ[constants.DB_PASSWORD]
+
+config = Config()
+
 
 # Connection to target DW:
-pgconn = psycopg2.connect(user='postgres', password='PASSWORD', host='127.0.0.1', database='f_klub')
+pgconn = psycopg2.connect(user=DB_USER_NAME, password=DB_PASSWORD, host=DB_HOST, database=DB_NAME)
 connection = pygrametl.ConnectionWrapper(pgconn)
 connection.setasdefault()
 connection.execute('set search_path to f_klub')
