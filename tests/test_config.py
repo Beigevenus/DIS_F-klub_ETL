@@ -27,9 +27,9 @@ class TestConfig:
             ("file_name_sale", "sale.csv")
         ],
     )
-    def test__When_read_test_config__Then_correcty_value_exposed_in_config(self, conf_obj_attr, expected_value):
+    def test__When_test_config_read__Then_correct_value_exposed(self, conf_obj_attr, expected_value):
         """ Checks that all the public properties of the config object have the expected values. """
 
-        actual_data_folder_name = getattr(self.config, conf_obj_attr)
+        actual_value = getattr(self.config, conf_obj_attr)
 
-        assert expected_value == actual_data_folder_name
+        assert actual_value == expected_value
