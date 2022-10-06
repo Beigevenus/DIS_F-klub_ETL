@@ -1,2 +1,13 @@
+
+Next up:
+    ☐ Handle empty timestamp in `extract_attribute_values_from_timestamp`.
+
+Construct/insert into tables:
+    ☐ Location
+    ☐ Member
+    ☐ Product
+    ☐ SalesFact
+    ☐ InventoryFact
+
 python:
     ☐ Use `sale.csv` for the full experience.

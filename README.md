@@ -15,6 +15,6 @@ python3 bootstrap.py --install-dependencies
 python3 bootstrap.py --upgrade-pip
 
 # Lastly, create a default `.env` file for configuring parts of the program.
-python bootstrap.py --scaffold-env-file
+python3 bootstrap.py --scaffold-env-file
 ```
 

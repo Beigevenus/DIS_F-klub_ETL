@@ -82,7 +82,7 @@ def create_env_file_template(env_file_name=".env_44"):
 
 
 def build_template():
-    """ Builds `.env` file templte. """
+    """ Builds `.env` file template. """
 
     template = ""
     template += f"{ENV_VAR_PYTHONPATH}=\"{SRC_DIR}\" {NEWLINE}"

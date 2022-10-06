@@ -12,7 +12,7 @@ create table time(
     quarter int,
     month int,
     day int,
-    week_day varchar,
+    weekday varchar,
     hour int,
     minute int,
     is_holiday boolean,
