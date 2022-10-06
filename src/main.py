@@ -79,7 +79,7 @@ def read_from_csv_file(relative_path_to_file, mode="r", buffering=16384, encodin
     from pathlib import Path
     project_dir_path = Path(__file__).parent.parent.resolve()
     abs_path_to_file = str(Path.joinpath(project_dir_path, relative_path_to_file))
-    return CSVSource(open(abs_path_to_file, mode, buffering, encoding), delimiter)
+    return CSVSource(open(abs_path_to_file, mode, buffering, encoding=encoding), delimiter=delimiter)
 
 
 def get_csv_file_path(file_name, data_folder_name=config.data_folder_name):
