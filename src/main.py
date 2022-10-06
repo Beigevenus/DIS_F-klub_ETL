@@ -47,8 +47,8 @@ location_dim = Dimension(
 time_dim = Dimension(
     name='time',
     key='time_id',
-    attributes=['year', 'quarter', 'month', 'day', 'weekday', 'is_holiday', 'time_of_day'],
-    lookupatts=['year', 'month', 'day', 'time_of_day']
+    attributes=['year', 'quarter', 'month', 'day', 'weekday', 'is_holiday', 'hour', 'minute'],
+    lookupatts=['year', 'month', 'day', 'hour', 'minute']
 )
 
 # Fact Tables
