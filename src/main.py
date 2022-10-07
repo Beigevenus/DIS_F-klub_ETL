@@ -116,19 +116,32 @@ def extract_attribute_values_from_timestamp(timestamp: str) -> Dict[str, any]:
     match_obj = re.search(TIMESTAMP_REGEX, timestamp)
 
     time_dim_row = {}
-    time_dim_row["year"] = int(match_obj.group(1))
-    time_dim_row['month'] = int(match_obj.group(2))
-    time_dim_row['day'] = int(match_obj.group(3))
-    time_dim_row['hour'] = int(match_obj.group(4))
-    time_dim_row['minute'] = int(match_obj.group(5))
+    if match_obj:
+        time_dim_row["year"] = int(match_obj.group(1))
+        time_dim_row['month'] = int(match_obj.group(2))
+        time_dim_row['day'] = int(match_obj.group(3))
+        time_dim_row['hour'] = int(match_obj.group(4))
+        time_dim_row['minute'] = int(match_obj.group(5))
 
-    time_dim_row['quarter'] = int(time_dim_row['month']) // 3 + 1
-    time_dim_row['weekday'] = datetime(
-        year=time_dim_row['year'],
-        month=time_dim_row['month'],
-        day=time_dim_row['day']
-    ).strftime('%A')
-    time_dim_row['is_holiday'] = False  # `is_holiday` not supported in this version.
+        time_dim_row['quarter'] = int(time_dim_row['month']) // 3 + 1
+        time_dim_row['weekday'] = datetime(
+            year=time_dim_row['year'],
+            month=time_dim_row['month'],
+            day=time_dim_row['day']
+        ).strftime('%A')
+        time_dim_row['is_holiday'] = False  # `is_holiday` not supported in this version.
+    else:
+        # Default to end of time
+        time_dim_row.update({
+            "year": 9999,
+            "month": 12,
+            "day": 31,
+            "hour": 23,
+            "minute": 59,
+            "quarter": 4,
+            "weekday": "Friday",
+            "is_holiday": False
+        })
 
     return time_dim_row
 
@@ -137,7 +150,7 @@ def insert_time_row(timestamp: str):
 
     row = extract_attribute_values_from_timestamp(timestamp)
     # print(row)
-    time_dim.insert(row)
+    time_dim.ensure(row)
 
 
 def transform_timestamp(data, time_key: str):
@@ -149,8 +162,8 @@ def transform_timestamp(data, time_key: str):
     # [ insert_time_row(row[time_key]) if verify_timestamp(row[time_key]) else  for row in tqdm(data) ]
 
 
-def find_category_id(product_id, category_data):
-    for row in category_data:
+def find_category_id(product_id, product_category_data):
+    for row in product_category_data:
         if row['product_id'] == product_id:
             return row['category_id']
 
@@ -165,34 +178,34 @@ def find_category_name(category_id, category_data):
     raise Exception(f"Could not find category name from {category_id}")
 
 
-def extract_product_dict(entry):
+def extract_product_dict(row, category_data, product_category_data):
     # 'category', 'is_active'
     product_dict = {}
-    product_dict['name'] = entry['name']
-    product_dict['price'] = float(int(entry['price']) / 10)  # price is measured in "øre".
-    product_dict['is_active'] = bool(entry['active'])
+    product_dict['name'] = row['name']
+    product_dict['price'] = float(int(row['price']) / 100)  # price is measured in "øre".
+    product_dict['is_active'] = bool(row['active'])
 
-    product_id = entry['id']
+    product_id = row['id']
 
     try:
-        category_id = find_category_id(product_id, category_data)
+        category_id = find_category_id(product_id, product_category_data)
         product_dict['category'] = find_category_name(category_id, category_data)
     except Exception as e:
         print(f"Got exception {str(e)}")
         product_dict['category'] = "Uncategorized"
 
-    time_dict = extract_attribute_values_from_timestamp(entry['deactivate_date'])
-    entry['deactivation_date'] = time_dim.lookup(entry, time_dict)
+    time_dict = extract_attribute_values_from_timestamp(row['deactivate_date'])
+    product_dict['deactivation_date'] = time_dim.ensure(time_dict)
 
     return product_dict
 
 
-def construct_product_dim(product_data, category_data, join_data):
+def construct_product_dim(product_data, category_data, product_category_data):
 
     for row in product_data:
-        product_dict = extract_product_dict(row)
+        product_dict = extract_product_dict(row, category_data, product_category_data)
         print(product_dict)
-        product_dim.insert(product_dict)
+        product_dim.ensure(product_dict)
 
 
 def transform():
@@ -259,7 +272,7 @@ def main():
         # row['dateid'] = datedim.ensure(row, {'date':'downloaddate'})
         # row['testid'] = testdim.lookup(row, {'testname':'test'})
         # facttbl.insert(row)
-    # connection.commit()
+    connection.commit()
 
 
 if __name__ == '__main__':
