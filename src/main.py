@@ -10,8 +10,12 @@ import dw_setup
 config = Config()
 
 
-def read_from_csv_file(relative_path_to_file, mode="r", buffering=16384, encoding="utf-8", delimiter=";"):
-    """ Utility function for reading data from a CSV file. """
+def read_from_csv_file(relative_path_to_file, mode="r", buffering=16384, encoding="utf-8", delimiter=";") -> CSVSource:
+    """ Utility function for reading data from a CSV file. 
+
+        Returns a CSVSource object which is the same as a DictReader.
+
+        For more see: https://docs.python.org/3/library/csv.html#csv.DictReader. """
 
     from pathlib import Path
     project_dir_path = Path(__file__).parent.parent.resolve()
@@ -27,22 +31,22 @@ def get_csv_file_path(file_name, data_folder_name=config.data_folder_name):
 
 
 def main():
-    product_data = read_from_csv_file(
+    product_data: DictReader = read_from_csv_file(
         get_csv_file_path(config.file_name_product)
     )
-    category_data = read_from_csv_file(
+    category_data: DictReader = read_from_csv_file(
         get_csv_file_path(config.file_name_category)
     )
-    member_data = read_from_csv_file(
+    member_data: DictReader = read_from_csv_file(
         get_csv_file_path(config.file_name_members)
     )
-    product_categories_data = read_from_csv_file(
+    product_categories_data: DictReader = read_from_csv_file(
         get_csv_file_path(config.file_name_product_categories)
     )
-    location_data = read_from_csv_file(
+    location_data: DictReader = read_from_csv_file(
         get_csv_file_path(config.file_name_room)
     )
-    sale_data = read_from_csv_file(
+    sale_data: DictReader = read_from_csv_file(
         get_csv_file_path(config.file_name_sale)
     )
 
