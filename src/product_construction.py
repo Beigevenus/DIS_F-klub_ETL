@@ -1,7 +1,7 @@
 import re
 from copy import deepcopy
-from src.dw_setup import product_dim, time_dim
-from src.time_construction import extract_attribute_values_from_timestamp
+from dw_setup import product_dim, time_dim
+from time_construction import extract_attribute_values_from_timestamp
 
 
 def clean_product_name(name: str):
