@@ -64,7 +64,7 @@ def args_given(args: List[Tuple[str, bool]]):
     return False
 
 
-def create_env_file_template(env_file_name=".env_44"):
+def create_env_file_template(env_file_name=".env"):
     """ Creates an empty `.env` file that can be populated with data afterwards. 
         This data will be used in the program."""
 
