@@ -1,13 +1,17 @@
 
 Next up:
-    ☐ Handle empty timestamp in `extract_attribute_values_from_timestamp`.
+    ✔ Handle empty timestamp in `extract_attribute_values_from_timestamp`. @done(22-10-07 14:20)
 
 Construct/insert into tables:
-    ☐ Location
-    ☐ Member
-    ☐ Product
+    ✔ Location @done(22-10-07 14:21)
+    ✔ Member @done(22-10-07 14:21)
+    ✔ Product @done(22-10-07 14:20)
     ☐ SalesFact
+        ☐ Change member.
+            ☐ Change in report also.
     ☐ InventoryFact
+        Note: 
+            - Won't be implemented due to missing data.
 
 python:
     ☐ Use `sale.csv` for the full experience.

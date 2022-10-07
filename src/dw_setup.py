@@ -3,8 +3,7 @@ import psycopg2
 import pygrametl
 from dotenv import load_dotenv
 from pygrametl.tables import Dimension, FactTable
-from src import constants
-from src.config import Config
+import constants
 
 load_dotenv()  # take environment variables from .env.
 

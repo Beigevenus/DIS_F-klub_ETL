@@ -3,8 +3,8 @@ from config import Config
 from location_construction import transform_location
 from member_construction import transform_member
 from product_construction import clean_product_data, transform_product
-from sales_construction import transform_sales
 from time_construction import transform_time
+from sales_construction import transform_sales
 import dw_setup
 
 config = Config()
