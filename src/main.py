@@ -1,7 +1,10 @@
 from pygrametl.datasources import CSVSource
 from config import Config
-from src.product_construction import clean_product_data, transform_product
-from src.time_construction import transform_time
+from location_construction import transform_location
+from member_construction import transform_member
+from product_construction import clean_product_data, transform_product
+from sales_construction import transform_sales
+from time_construction import transform_time
 import dw_setup
 
 config = Config()
@@ -61,7 +64,16 @@ def main():
     transform_time(sale_data, "timestamp")
 
     # Populate product table
-    transform_product(product_data, category_data, product_categories_data_list)
+    transform_product(product_data, category_data_list, product_categories_data_list)
+
+    # Populate location table
+    transform_location(location_data)
+
+    # Populate member table
+    transform_member(member_data)
+
+    # Populate sales table
+    transform_sales(sale_data)
 
     dw_setup.connection.commit()
 

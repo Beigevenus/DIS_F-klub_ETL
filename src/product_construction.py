@@ -1,7 +1,10 @@
 import re
 from copy import deepcopy
-from src.dw_setup import product_dim, time_dim
-from src.time_construction import extract_attribute_values_from_timestamp
+
+from tqdm import tqdm
+
+from dw_setup import product_dim, time_dim
+from time_construction import extract_attribute_values_from_timestamp
 
 
 def clean_product_name(name: str):
@@ -63,7 +66,7 @@ def construct_product_dict(row, category_data, product_category_data):
         category_id = find_category_id(product_id, product_category_data)
         product_dict['category'] = find_category_name(category_id, category_data)
     except Exception as e:
-        print(f"Got exception {str(e)}")
+        # print(f"Got exception {str(e)}")
         product_dict['category'] = "Uncategorized"
 
     time_dict = extract_attribute_values_from_timestamp(row['deactivate_date'])
@@ -73,6 +76,6 @@ def construct_product_dict(row, category_data, product_category_data):
 
 
 def transform_product(product_data, category_data, product_category_data):
-    for row in product_data:
+    for row in tqdm(product_data, desc="Constructing Product rows"):
         product_dict = construct_product_dict(row, category_data, product_category_data)
         product_dim.ensure(product_dict)

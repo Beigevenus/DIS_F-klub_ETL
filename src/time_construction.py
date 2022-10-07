@@ -1,7 +1,7 @@
 import re
 from datetime import datetime
 from tqdm import tqdm
-from src.dw_setup import time_dim
+from dw_setup import time_dim
 
 TIMESTAMP_REGEX = "^([-]?[0-9]+)-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1]) " \
                   "([0-1][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])(\+|-)(0[0-9]|1[0-2])$"
@@ -46,7 +46,7 @@ def load_time(row):
 
 
 def transform_time(data, time_key: str):
-    for row in tqdm(data):
+    for row in tqdm(data, desc=f"Constructing Time rows for key '{time_key}'"):
         if verify_timestamp(row[time_key]):
             load_time(extract_attribute_values_from_timestamp(row[time_key]))
 
