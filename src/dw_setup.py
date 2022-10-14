@@ -22,28 +22,29 @@ connection.execute('set search_path to f_klub')
 product_dim = Dimension(
     name='product',
     key='product_id',
-    attributes=['category', 'name', 'price', 'is_active', 'deactivation_date'],
-    lookupatts=['name']
+    attributes=['lookup_id', 'category', 'name', 'price', 'is_active', 'deactivation_date'],
+    lookupatts=['lookup_id']
 )
 
 member_dim = Dimension(
     name='member',
-    key='member_id',
-    attributes=['is_active']
+    key='member_id',  # This id is auto generated.
+    attributes=['lookup_id', 'is_active'],  # `lookup_id` is from from the data and makes lookup possible.
+    lookupatts=['lookup_id']
 )
 
 location_dim = Dimension(
     name='location',
     key='location_id',
-    attributes=["name"],
-    lookupatts=['name']
+    attributes=['lookup_id', 'name'],
+    lookupatts=['lookup_id']
 )
 
 time_dim = Dimension(
     name='time',
     key='time_id',
-    attributes=['year', 'quarter', 'month', 'day', 'weekday', 'is_holiday', 'hour', 'minute'],
-    lookupatts=['year', 'month', 'day', 'hour', 'minute']
+    attributes=['time_stamp', 'year', 'quarter', 'month', 'day', 'weekday', 'is_holiday', 'hour', 'minute', 'seconds'],
+    lookupatts=['time_stamp']
 )
 
 # Fact Tables

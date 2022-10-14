@@ -8,6 +8,7 @@ set search_path to f_klub;
 -- Dimension Tables
 create table time(
     time_id int,
+    time_stamp varchar,
     year int,
     quarter int,
     month int,
@@ -15,12 +16,14 @@ create table time(
     weekday varchar,
     hour int,
     minute int,
+    seconds int,
     is_holiday boolean,
     PRIMARY KEY(time_id)
 );
 
 create table product(
     product_id int,
+    lookup_id int,
     category varchar,
     name varchar,
     price decimal,
@@ -32,12 +35,14 @@ create table product(
 
 create table member(
     member_id int,
+    lookup_id int,
     is_active boolean,
     PRIMARY KEY(member_id)
 );
 
 create table location(
     location_id int,
+    lookup_id int,
     name varchar,
     PRIMARY KEY(location_id)
 );

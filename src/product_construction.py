@@ -53,6 +53,7 @@ def find_category_name(category_id, category_data):
 
 def construct_product_dict(row, category_data, product_category_data):
     product_dict = {
+        "lookup_id": row["id"],
         'name': row['name'],
         'price': float(int(row['price']) / 100),
         'is_active': bool(row['active'])
@@ -67,8 +68,13 @@ def construct_product_dict(row, category_data, product_category_data):
         # print(f"Got exception {str(e)}")
         product_dict['category'] = "Uncategorized"
 
-    time_dict = extract_attribute_values_from_timestamp(row['deactivate_date'])
-    product_dict['deactivation_date'] = time_dim.ensure(time_dict)
+    lookup_dict = {"time_stamp": row["deactivate_date"]}
+    existing_time_stamp = time_dim.lookup(lookup_dict)
+    if existing_time_stamp:
+        product_dict['deactivation_date'] = existing_time_stamp
+    else:
+        time_dict = extract_attribute_values_from_timestamp(row['deactivate_date'])
+        product_dict['deactivation_date'] = time_dim.ensure(time_dict)
 
     return product_dict
 

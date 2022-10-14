@@ -7,11 +7,14 @@ Construct/insert into tables:
     ✔ Member @done(22-10-07 14:21)
     ✔ Product @done(22-10-07 14:20)
     ☐ SalesFact
-        ☐ Change member.
+        ✔ Change member. @done(22-10-14 13:04)
             ☐ Change in report also.
-    ☐ InventoryFact
+    ✘ InventoryFact @cancelled(22-10-14 13:05)
         Note: 
             - Won't be implemented due to missing data.
+    ☐ Insert sales fact
+
+    ☐ Handle member_dim lookup in constructing of sales  
 
 python:
     ☐ Use `sale.csv` for the full experience.

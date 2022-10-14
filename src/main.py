@@ -65,7 +65,7 @@ def main():
 
     # Verify that timestamps are valid and populate time table
     transform_time(product_data, "deactivate_date")
-    transform_time(sale_data, "timestamp")
+    # transform_time(sale_data, "timestamp")
 
     # Populate product table
     transform_product(product_data, category_data_list, product_categories_data_list)
@@ -75,6 +75,8 @@ def main():
 
     # Populate member table
     transform_member(member_data)
+
+    dw_setup.connection.commit()
 
     # Populate sales table
     transform_sales(sale_data)

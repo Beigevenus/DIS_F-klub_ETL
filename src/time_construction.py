@@ -12,11 +12,13 @@ def extract_attribute_values_from_timestamp(timestamp: str) -> dict[str, any]:
 
     time_dim_row = {}
     if match_obj:
+        time_dim_row['time_stamp'] = timestamp
         time_dim_row["year"] = int(match_obj.group(1))
         time_dim_row['month'] = int(match_obj.group(2))
         time_dim_row['day'] = int(match_obj.group(3))
         time_dim_row['hour'] = int(match_obj.group(4))
         time_dim_row['minute'] = int(match_obj.group(5))
+        time_dim_row['seconds'] = int(match_obj.group(6))
 
         time_dim_row['quarter'] = int(time_dim_row['month']) // 3 + 1
         time_dim_row['weekday'] = datetime(
@@ -28,11 +30,13 @@ def extract_attribute_values_from_timestamp(timestamp: str) -> dict[str, any]:
     else:
         # Default to end of time
         time_dim_row.update({
+            'time_stamp': timestamp,
             "year": 9999,
             "month": 12,
             "day": 31,
             "hour": 23,
             "minute": 59,
+            "seconds": 59,
             "quarter": 4,
             "weekday": "Friday",
             "is_holiday": False
