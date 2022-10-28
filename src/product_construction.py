@@ -23,6 +23,8 @@ def clean_product_name(name: str):
 
 
 def clean_product_data(product_data) -> list[dict[str, any]]:
+    """ Cleans product data and returns the clean product data as a list. """
+
     cleaned_product_data: list[dict[str, any]] = []
 
     # TODO: Figure out why product_data is destroyed.

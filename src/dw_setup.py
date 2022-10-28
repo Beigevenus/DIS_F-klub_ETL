@@ -2,7 +2,11 @@ import os
 import psycopg2
 import pygrametl
 from dotenv import load_dotenv
-from pygrametl.tables import Dimension, FactTable
+from pygrametl.tables import (
+    Dimension,
+    FactTable,
+    AccumulatingSnapshotFactTable
+)
 import constants
 
 load_dotenv()  # take environment variables from .env.
@@ -48,8 +52,9 @@ time_dim = Dimension(
 )
 
 # Fact Tables
-sales_fact = FactTable(
+sales_fact = AccumulatingSnapshotFactTable(
     name='sales',
+    otherrefs=[],
     keyrefs=['product_id', 'location_id', 'member_id', 'time_id'],
     measures=['total_sale']
 )
